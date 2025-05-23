@@ -1,4 +1,6 @@
+use axum::response::IntoResponse;
 use axum::{Json, Router, routing::get};
+use reqwest::StatusCode;
 use crate::manifest::{fetch_version_manifest, get_version_by_id};
 use crate::types::VersionManifest;
 use crate::cache::get_cached_manifest;
@@ -7,6 +9,7 @@ pub fn create_router() -> Router {
     Router::new()
         .route("/manifest", get(get_versions))
         .route("/version/{id}", get(get_version_by_id))
+        .fallback(not_found)
 }
 
 pub async fn get_versions() -> Result<Json<VersionManifest>, (axum::http::StatusCode, String)> {
@@ -22,4 +25,8 @@ pub async fn get_versions() -> Result<Json<VersionManifest>, (axum::http::Status
     }).await;
 
     Ok(Json(manifest))
+}
+
+async fn not_found() -> impl IntoResponse {
+    (StatusCode::NOT_FOUND, "404 - Not found.")
 }
