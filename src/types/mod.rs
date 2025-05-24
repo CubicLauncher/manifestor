@@ -5,6 +5,8 @@ pub const MOJANG_URL: &str = "https://piston-meta.mojang.com/mc/game/version_man
 #[derive(Debug, Serialize, Clone)]
 pub struct MinecraftVersion {
     pub id: String,
+    #[serde(rename="sha1")]
+    pub hash: String,
     pub release_time: String,
     pub url: String,
     #[serde(rename="type")]

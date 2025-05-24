@@ -22,6 +22,8 @@ pub async fn fetch_version_manifest() -> Result<VersionManifest, Box<dyn std::er
     struct MojangVersion {
         id: String,
         url: String,
+        #[serde(rename = "sha1")]
+        hash: String,
         #[serde(rename = "releaseTime")]
         release_time: String,
         #[serde(rename = "type")]
@@ -50,6 +52,7 @@ pub async fn fetch_version_manifest() -> Result<VersionManifest, Box<dyn std::er
             .into_iter()
             .map(|v| MinecraftVersion {
                 id: v.id,
+                hash: v.hash,
                 url: v.url,
                 release_time: v.release_time,
                 version_type: v.version_type,
